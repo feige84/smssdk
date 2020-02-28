@@ -42,7 +42,7 @@ func (s *WelinkSms) SendSMS() (*SendResult, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(string(result))
+	//fmt.Println(string(result))
 	data := SendResult{}
 	if err = json.Unmarshal(result, &data); err != nil {
 		return nil, err
@@ -55,7 +55,7 @@ func (b *WelinkBase) GetRemain() (*Remain, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(string(result))
+	//fmt.Println(string(result))
 	data := Remain{}
 	if err = json.Unmarshal(result, &data); err != nil {
 		return nil, err
