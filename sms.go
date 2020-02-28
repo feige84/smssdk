@@ -9,18 +9,10 @@ import (
 	"time"
 )
 
-type WelinkBase struct {
+type WeLink struct {
 	Name  string `json:"sname"`
 	Pwd   string `json:"spwd"`
-	Prdid string `json:"sprdid"`
-}
-
-type WelinkSms struct {
-	Name  string `json:"sname"`
-	Pwd   string `json:"spwd"`
-	Prdid string `json:"sprdid"`
-	Dst   string `json:"sdst"`
-	Msg   string `json:"smsg"`
+	PrdID string `json:"sprdid"`
 }
 
 type Remain struct {
@@ -37,8 +29,14 @@ type SendResult struct {
 
 const apiGateWay = "http://api.51welink.com/"
 
-func (s *WelinkSms) SendSMS() (*SendResult, error) {
-	result, err := httpSend(apiGateWay+"json/sms/g_Submit", s)
+func (s *WeLink) SendSMS(dst, msg string) (*SendResult, error) {
+	postData := make(map[string]interface{})
+	postData["sname"] = s.Name
+	postData["spwd"] = s.Pwd
+	postData["sprdid"] = s.PrdID
+	postData["sdst"] = dst
+	postData["smsg"] = msg
+	result, err := httpSend(apiGateWay+"json/sms/g_Submit", postData)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +48,7 @@ func (s *WelinkSms) SendSMS() (*SendResult, error) {
 	return &data, nil
 }
 
-func (b *WelinkBase) GetRemain() (*Remain, error) {
+func (b *WeLink) GetRemain() (*Remain, error) {
 	result, err := httpSend(apiGateWay+"json/Query/GetRemain", b)
 	if err != nil {
 		return nil, err
